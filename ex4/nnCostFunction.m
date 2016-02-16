@@ -100,11 +100,19 @@ pos_class = (-1 .* y_mat) .* log(hypo);
 
 % y = 0, calculation
 neg_class = (1 .- y_mat) .* log(1 .- hypo); 
-diff = pos_class - neg_class;
-[diffm, diffn] = size(diff);
 
 J = (1 / m ) .* sum(sum(pos_class - neg_class));
 
+% let's build regularized cost function term
+[t1m, t1n] = size(Theta1);
+[t2m, t2n] = size(Theta2);
+
+theta1_nobias = Theta1(:, 2:t1n);
+theta2_nobias = Theta2(:, 2:t2n);
+
+sum_squares = sum(sum(theta1_nobias .^ 2)) + sum(sum(theta2_nobias .^ 2));
+reg_term = (lambda / (2 * m)) .* sum_squares;
+J = J + reg_term;
 % -------------------------------------------------------------
 % =========================================================================
 
