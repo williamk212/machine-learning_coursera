@@ -69,6 +69,9 @@ Theta2_grad = zeros(size(Theta2));
 %                                   num_labels, ...
 %                                   X, y, lambda)
 
+% helpful notes:
+% https://www.coursera.org/learn/machine-learning/programming/AiHgN/neural-network-learning/discussions/QFnrpQckEeWv5yIAC00Eog
+
 % let's calculate the hypothesis
 % initialize input layer, add 1 to X matrix 
 m = size(X, 1);
