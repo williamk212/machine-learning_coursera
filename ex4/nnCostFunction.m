@@ -72,10 +72,10 @@ Theta2_grad = zeros(size(Theta2));
 % let's calculate the hypothesis
 % initialize input layer, add 1 to X matrix 
 m = size(X, 1);
-X = [ones(m, 1) X];
+X1 = [ones(m, 1) X];
 
 % calculate hidden layer
-z2 = Theta1 * X';
+z2 = Theta1 * X1';
 a2 = sigmoid(z2);
 n_a2 = size(a2, 2);
 % initialize hidden layer by adding 1 to matix
@@ -87,12 +87,18 @@ a2 = [ones(1, n_a2); a2];
 z3 = Theta2 * a2;
 hypo = sigmoid(z3)';
 [hm, hn] = size(hypo);
-%printf("size hypo: %ix%i\n", hm, hn);
+% printf("size hypo: %ix%i\n", hm, hn);
 % printf("sample hypo: %i\n", hypo(2, :));
 
 % convert y to y_mat
 y_eye = eye(num_labels);
 y_mat = y_eye(y, :);
+[ymatm, ymatn] = size(y_mat);
+% printf("size y-matrix: %ix%i\n", ymatm, ymatn);
+
+% backpropagation: delta3
+d3 = hypo - y_mat;
+
 % y = 1, calculation
 pos_class = (-1 .* y_mat) .* log(hypo);
 [loghm, loghn] = size(log(hypo));
@@ -116,6 +122,53 @@ J = J + reg_term;
 % -------------------------------------------------------------
 % =========================================================================
 
+% backpropagation: delta2
+% more info: https://www.coursera.org/learn/machine-learning/discussions/i2u9QezvEeSQaSIACtiO2Q/replies/XpcX6-0PEeS0tyIAC9RBcw
+[z2m, z2n] = size(z2);
+% size(z2): 25x5000
+% printf("size z2: %ix%i\n", z2m, z2n);
+
+[d3m, d3n] = size(d3);
+% printf("size d3: %ix%i\n", d3m, d3n);
+
+d2 = (d3 * Theta2(:,2:end)) .* sigmoidGradient(z2)';
+[d2m, d2n] = size(d2);
+% printf("size d2: %ix%i\n", d2m, d2n);
+%a2 = sigmoid(z2);
+[a2m, a2n] = size(a2);
+% printf("size a2: %ix%i\n", a2m, a2n);
+
+% NOTES about dimension:
+% m = the number of training examples
+% n = the number of training features, including the initial bias unit.
+% h = the number of units in the hidden layer - NOT including the bias unit
+% r = the number of output classifications
+
+% delta1 = product d2 and a1 (h x m) * (m x n) --> (h x n)
+% a1 = X (w/o 1s), size: 5000x400
+% d2, size: 5000x25
+delta1 = d2' * X1;
+[dt1m, dt1n] = size(delta1);
+% printf("size delta1: %ix%i\n", dt1m, dt1n);
+% delta2 = product d3 and a2, (r x m) * (m x [h + 1]) --> (r x [h+1])
+% d3, size: 5000x10
+delta2 = d3' * a2';
+% delta2 = delta2(2:end);
+[dt2m, dt2n] = size(delta2);
+% printf("size delta2: %ix%i\n", dt2m, dt2n);
+
+Theta1_grad = (1 / m) * delta1;
+Theta2_grad = (1 / m) * delta2;
+
+% add regularized gradient
+% note that we should NOT be regularizing the first column of Theta
+theta1m = size(Theta1)(1);
+theta1_reg = (lambda / m) * ([zeros(theta1m, 1) Theta1(:, 2:end)]);
+theta2m = size(Theta2)(1);
+theta2_reg = (lambda / m) * ([zeros(theta2m, 1) Theta2(:, 2:end)]);
+
+Theta1_grad = Theta1_grad + theta1_reg;
+Theta2_grad = Theta2_grad + theta2_reg;
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
