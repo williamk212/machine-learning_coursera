@@ -52,14 +52,19 @@ error_val   = zeros(m, 1);
 %
 
 % ---------------------- Sample Solution ----------------------
+[xvm, xvn] = size(Xval);
+printf("size Xval: %ix%i\n", xvm, xvn);
 
+[yvm, yvn] = size(yval);
+printf("size yval: %ix%i\n", yvm, yvn);
 
-
-
-
-
-
-% -------------------------------------------------------------
+for i = 1:m
+  theta = trainLinearReg(X(1:i,:), y(1:i), lambda);
+  [Jtrain, Gtrain] = linearRegCostFunction(X(1:i,:), y(1:i), theta, 0);
+  error_train(i) = Jtrain;
+  [Jcv, Gcv] = linearRegCostFunction(Xval, yval, theta, 0);
+  error_val(i) = Jcv;
+end
 
 % =========================================================================
 
