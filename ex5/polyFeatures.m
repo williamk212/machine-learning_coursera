@@ -5,7 +5,6 @@ function [X_poly] = polyFeatures(X, p)
 %   X_poly(i, :) = [X(i) X(i).^2 X(i).^3 ...  X(i).^p];
 %
 
-
 % You need to return the following variables correctly.
 X_poly = zeros(numel(X), p);
 
@@ -14,12 +13,12 @@ X_poly = zeros(numel(X), p);
 %               column of X contains the values of X to the p-th power.
 %
 % 
-
-
-
-
-
-
+for i = 1:p
+  if i == 1,
+    X_poly(:, 1) = X;
+  else
+    X_poly(:,i) = X_poly(:, i - 1) .* X;
+end
 % =========================================================================
 
 end
