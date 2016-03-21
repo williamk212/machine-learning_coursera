@@ -21,9 +21,9 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 [Xm, Xn] = size(X);
-printf("size X: %ix%i\n", Xm, Xn);
+% printf("size X: %ix%i\n", Xm, Xn);
 [cm, cn] = size(centroids);
-printf("size centroid: %ix%i\n", cm, cn);
+% printf("size centroid: %ix%i\n", cm, cn);
 
 % from tutorial: https://www.coursera.org/learn/machine-learning/module/kxH2P/discussions/ncYc-ddQEeWaURKFEvfOjQ
 % 

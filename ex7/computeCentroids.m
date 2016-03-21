@@ -25,8 +25,15 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-for i = 1:K
 
+for i = 1:K
+  % identify which value are a specific value
+  id_vec = idx == i;
+  [idm, idn] = size(idx);
+  % printf("id_vec size: %ix%i\n", idm, idn);
+  sumx = sum(X .* repmat(id_vec, 1, size(X,2)));
+  countk = sum(id_vec);
+  centroids(i,:) = sumx ./ countk;
 end
 % =============================================================
 
