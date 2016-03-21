@@ -39,6 +39,16 @@ idx = zeros(size(X,1), 1);
 %   minimum distance. The result is a vector of size (m x 1) with the indexes
 %   of the closest centroids.
 
+% quick tutorial on bsxfun()
+% bsxfun() applies a function on a matrix with a vector
+% ex: A = [1 2 10; 1 4 20;1 6 15] ;
+%     C = bsxfun(@minus, A, mean(A))
+% result:
+%   0 -2 -5
+%   0  0  5
+%   0  2  0
+% where mean(A): 1 4 15
+
 distance = zeros(Xm, K);
 for i = 1:K
   diff = bsxfun(@minus, X, centroids(i,:));
