@@ -35,6 +35,7 @@ for epsilon = min(pval):stepsize:max(pval)
     prec = tp / (tp + fp);
     % recall
     rec = tp / (tp + fn);
+    % printf("precision: %f, recall: %f\n", prec, rec);
     F1 = 2 * prec * rec / (prec + rec);
 
     % =============================================================
