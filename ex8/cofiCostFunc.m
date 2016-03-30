@@ -39,10 +39,18 @@ Theta_grad = zeros(size(Theta));
 %        Theta_grad - num_users x num_features matrix, containing the 
 %                     partial derivatives w.r.t. to each element of Theta
 %
-sum_sq = ((X * Theta') - Y) .^ 2;
-J = sum(sum(R .* sum_sq)) ./ 2; 
-
-
+hypo_diff = (X * Theta') - Y;
+sum_sq = hypo_diff .^ 2;
+J = sum(sum(R .* sum_sq)) ./ 2;
+J_reg = J + sum(sum(Theta .^ 2)) .* lambda ./ 2 + sum(sum(X.^ 2)) .* lambda ./ 2;
+J = J_reg;
+% R .* sum_sq is: num_movies x num_users
+% [summ, sumn] = size(sum(R .* hypo_diff));
+% printf("sum size: %ix%i\n", summ, sumn);
+% 1x5, 1 x num_users
+% rx_hypo = R .* hypo_diff;
+X_grad = (R .* hypo_diff) * Theta .+ (lambda .* X);
+Theta_grad = (R .* hypo_diff)' * X .+ (lambda .* Theta);
 % =============================================================
 
 grad = [X_grad(:); Theta_grad(:)];
