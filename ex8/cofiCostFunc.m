@@ -49,6 +49,8 @@ J = J_reg;
 % printf("sum size: %ix%i\n", summ, sumn);
 % 1x5, 1 x num_users
 % rx_hypo = R .* hypo_diff;
+
+% ref help: https://www.coursera.org/learn/machine-learning/programming/fyhXS/anomaly-detection-and-recommender-systems/discussions/MHmSQRYBEeWHGCIACznL2w
 X_grad = (R .* hypo_diff) * Theta .+ (lambda .* X);
 Theta_grad = (R .* hypo_diff)' * X .+ (lambda .* Theta);
 % =============================================================
